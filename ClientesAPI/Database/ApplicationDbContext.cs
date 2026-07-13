@@ -11,5 +11,5 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    DbSet<Client>  Clients { get; set; }
+    public DbSet<Client> Clients { get; set; }
 }
