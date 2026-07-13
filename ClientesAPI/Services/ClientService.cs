@@ -11,6 +11,17 @@ public class ClientService : IClientService
     {
         _context = context;
     }
+
+    public async Task<List<Client>> ListClients()
+    {
+        return await _context.Clients.ToListAsync();
+    }
+
+    public async Task<Client> GetClientById(Guid id)
+    {
+        return await _context.Clients.FindAsync(id);
+    }
+
     public async Task AddClient(Client client)
     {
         await _context.Clients.AddAsync(client);
