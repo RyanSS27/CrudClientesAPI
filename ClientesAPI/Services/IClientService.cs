@@ -1,3 +1,4 @@
+using ClientesAPI.Dtos;
 using ClientesAPI.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,5 +11,8 @@ public interface IClientService
     // que não se deve conter em interfaces
     public Task<Client?> GetClientById(Guid id);
     
-    public Task AddClient(Client client);
+    public Task<ClientOutDto> AddClient(ClientInputDto clientInputDto);
+    
+    public Task<bool> DeleteClient(Guid id);
+    public Task<ClientOutDto?> UpdateClient(Guid id, ClientInputDto client);
 }

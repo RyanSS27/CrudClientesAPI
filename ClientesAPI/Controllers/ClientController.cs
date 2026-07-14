@@ -1,3 +1,4 @@
+using ClientesAPI.Dtos;
 using ClientesAPI.Entities;
 using ClientesAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -30,12 +31,31 @@ public class ClientController(IClientService clientService) : ControllerBase
         return Ok(client);
     }
 
-    // seguriu um [Frombody] antes do cliente
+    // seguriu um [FromBody] antes do cliente
     [HttpPost]
-    public async Task<IActionResult> CreateClient(Client client)
+    public async Task<IActionResult> CreateClient(ClientInputDto clientInputDto)
     {
-        await _clientService.AddClient(client);
+        var client = await _clientService.AddClient(clientInputDto);
         return CreatedAtAction(nameof(GetClientById), new { id = client.Id }, client);
     }
-    // preciso entender melhor sobre o porquê desse nameof
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateClient(Guid id, ClientInputDto client)
+    {
+        var clientOutDto = await _clientService.UpdateClient(id, client);
+
+        if (clientOutDto is null)
+            return NotFound(new { mensagem = "Cliente não encontrado"});
+        
+        return Ok(clientOutDto);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteClient(Guid id)
+    {
+        bool response = await _clientService.DeleteClient(id);
+        if(response) return NoContent();
+        
+        return NotFound(new { mensagem = "Contato não encontrado." });
+    }
 }
