@@ -1,91 +1,101 @@
-# Client CRUD API
+# 📋 Client CRUD API
 
-Web API desenvolvida na plataforma **.NET 10** com persistência em banco de dados relacional **PostgreSQL**. 
-Este projeto consiste na implementação de um CRUD (Create, Read, Update, Delete) completo, construído para consolidar os fundamentos da linguagem C#, Entity Framework Core e boas práticas de engenharia de software, como separação de responsabilidades e uso de DTOs.
+API REST desenvolvida em **.NET 10** para gerenciamento de clientes. O projeto implementa um CRUD completo utilizando **Entity Framework Core** e **PostgreSQL**, com foco no estudo da linguagem C#, persistência de dados e boas práticas de desenvolvimento.
 
-## 🚀 Funções Principais do Sistema
+## 🚀 Funcionalidades
 
-* **Cadastrar Clientes (Create):** Inserção de clientes utilizando validação nativa de tipos.
-* **Listar e Buscar (Read):** Listagem geral e específica de clientes utilizando identificadores únicos universais (`Guid`).
-* **Atualizar Cadastros (Update):** Modificação segura de dados cadastrais existentes.
-* **Remover Clientes (Delete):** Exclusão de registros do banco de dados utilizando padrão de retorno HTTP adequado (204 No Content).
+- Cadastrar clientes
+- Listar clientes
+- Buscar clientes por ID (`Guid`)
+- Atualizar clientes
+- Remover clientes
 
 ---
 
-## Estrutura do Projeto
+## 🛠️ Tecnologias
 
-A arquitetura do projeto foi desenhada visando a separação de responsabilidades (Separation of Concerns), isolando o tráfego HTTP das regras de negócio e do acesso a dados.
+- .NET 10 (C#)
+- Entity Framework Core
+- PostgreSQL 16
+- Scalar
+
+---
+
+## 📁 Estrutura do Projeto
 
 ```text
 📁 ClientesAPI/
-├── 📁 Controllers/      # Endpoints REST (Porta de entrada HTTP)
-├── 📁 Database/         # Contexto de dados do EF Core (ApplicationDbContext)
-├── 📁 Dtos/             # Data Transfer Objects (Isolam a entrada e saída de dados)
-├── 📁 Entities/         # Modelos de domínio centrais da aplicação (ex: Client.cs)
-├── 📁 Migrations/       # Histórico de versionamento estrutural do Banco de Dados
-├── 📁 Services/         # Camada de serviços contendo a lógica de negócios e injeção de dependência
-├── 📄 appsettings.json  # Arquivo de configuração (Template sem credenciais reais)
-└── 📄 Program.cs        # Inicializador do .NET, Pipeline HTTP e Container de Injeção de Dependência
+├── 📁 Controllers/      # Endpoints da API
+├── 📁 Database/         # Contexto do Entity Framework Core
+├── 📁 Dtos/             # Objetos de transferência de dados
+├── 📁 Entities/         # Entidades da aplicação
+├── 📁 Migrations/       # Histórico das migrações
+├── 📁 Services/         # Regras de negócio
+├── 📄 appsettings.json  # Configurações da aplicação
+└── 📄 Program.cs        # Inicialização da aplicação
 ```
+
 ---
 
-## Tecnologias Chave
-*.NET 10 (C#)
+## ⚙️ Executando o projeto
 
-*Entity Framework Core (Adaptador ORM para banco de dados)
+### Pré-requisitos
 
-*PostgreSQL 16.14 (Banco de dados relacional)
+- .NET SDK 10
+- PostgreSQL 16+
 
-*Scalar (Interface moderna e interativa para documentação e testes da API REST
+### 1. Clonar o repositório
 
---- 
-
-## Configuração do Ambiente Local
-
-### 1. Clonar e Restaurar Dependências
 ```bash
-git clone [https://github.com/RyanSS27/client-crud-api.git](https://github.com/RyanSS27/client-crud-api.git)
+git clone https://github.com/RyanSS27/client-crud-api.git
 cd client-crud-api/ClientesAPI
 dotnet restore
 ```
 
-### 2. Configurar a String de Conexão (User Secrets)
-Para não expor senhas no repositório do Git, utilize a ferramenta de segredos do .NET para configurar sua conexão com o PostgreSQL:
+### 2. Configurar a conexão com o banco
+
+Utilize o **User Secrets** para armazenar sua string de conexão local.
+
 ```bash
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=client_crud_db;Username=postgres;Password=SUA_SENHA_AQUI"
 ```
 
-### 3. Executar as Migrations (Criação do Banco)
-Com o serviço do PostgreSQL ativo em sua máquina, aplique a estrutura das tabelas usando o EF Core:
+### 3. Criar o banco de dados
+
 ```bash
 dotnet ef database update
 ```
 
-### 4. Rodar a Aplicação
+### 4. Executar a aplicação
+
 ```bash
 dotnet run
 ```
 
 ---
 
-## Como Utilizar a API
+## 🧪 Como utilizar
 
-Ao rodar o projeto localmente, você pode acessar a interface visual do **Scalar** (geralmente disponível na rota `/scalar/v1` ou na raiz da API) para visualizar e interagir com todos os endpoints documentados.
+Após iniciar a aplicação, acesse o **Scalar** para visualizar e testar os endpoints da API.
 
-### Matriz de Endpoints Disponíveis
+```text
+/scalar/v1
+```
+
+### Endpoints
 
 | Método | Rota | Descrição |
-| :--- | :--- | :--- |
-| **GET** | `/api/clients` | Retorna a lista completa de clientes cadastrados. |
-| **POST** | `/api/clients` | Cadastra um novo cliente. |
-| **GET** | `/api/clients/{id}` | Busca um cliente específico através do seu `Guid`. |
-| **PUT** | `/api/clients/{id}` | Atualiza os dados de um cliente existente. |
-| **DELETE** | `/api/clients/{id}` | Remove um cliente da base de dados. |
+| :---: | :--- | :--- |
+| GET | `/api/clients` | Lista todos os clientes. |
+| GET | `/api/clients/{id}` | Busca um cliente pelo ID. |
+| POST | `/api/clients` | Cadastra um novo cliente. |
+| PUT | `/api/clients/{id}` | Atualiza um cliente existente. |
+| DELETE | `/api/clients/{id}` | Remove um cliente. |
 
-### Exemplo de Uso: Criar Cliente (POST)
+### Exemplo de requisição
 
-* **Rota:** `POST /api/clients`
-* **Payload (Body):**
+**POST** `/api/clients`
+
 ```json
 {
   "name": "Ryan Souza",
@@ -95,7 +105,8 @@ Ao rodar o projeto localmente, você pode acessar a interface visual do **Scalar
 }
 ```
 
-* **Retorno de Sucesso (201 Created):**
+### Resposta (201 Created)
+
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -105,3 +116,10 @@ Ao rodar o projeto localmente, você pode acessar a interface visual do **Scalar
   "phone": "(11) 99999-9999"
 }
 ```
+
+<div align="center">
+  <img src="https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white" alt=".NET">
+  <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/EF_Core-ORM-8A2BE2" alt="Entity Framework Core">
+  <img src="https://img.shields.io/badge/API-REST-009688" alt="REST API">
+</div>   
