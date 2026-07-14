@@ -33,12 +33,11 @@ public class ClientController(IClientService clientService) : ControllerBase
 
     // seguriu um [FromBody] antes do cliente
     [HttpPost]
-    public async Task<IActionResult> CreateClient(Client client)
+    public async Task<IActionResult> CreateClient(ClientInputDto clientInputDto)
     {
-        await _clientService.AddClient(client);
+        var client = await _clientService.AddClient(clientInputDto);
         return CreatedAtAction(nameof(GetClientById), new { id = client.Id }, client);
     }
-    // preciso entender melhor sobre o porquê desse nameof
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateClient(Guid id, ClientInputDto client)
